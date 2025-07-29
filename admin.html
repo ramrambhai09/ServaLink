@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f9fafb;
+    }
+
+    #loginContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #e0e7ff, #f3f4f6);
+    }
+
+    #loginContainer h2 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #1f2937;
+    }
+
+    input {
+      padding: 12px 14px;
+      margin: 8px 0;
+      width: 280px;
+      font-size: 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      background-color: #fff;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      transition: border 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #6366f1;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    button {
+      padding: 12px 20px;
+      margin-top: 15px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #4f46e5;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 280px;
+    }
+
+    button:hover {
+      background-color: #4338ca;
+    }
+
+    #error {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    #mainContent {
+      display: none;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Form -->
+  <div id="loginContainer">
+    <h2>Admin Login</h2>
+    <input type="email" id="email" placeholder="Enter email">
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="login()">Login</button>
+    <div id="error"></div>
+  </div>
+
+
+
+  <script>
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error');
+
+      if (email === 'ram@gmail.com' && password === '1234') {
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+      } else {
+        errorDiv.textContent = 'Invalid email or password!';
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SarvaLink 🔗 - Tool Directory Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+
+        
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #4cc9f0;
+            --text-color: #f8f9fa;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-panel {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        @media (min-width: 992px) {
+            .admin-panel {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .panel-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .tools-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tools-table th, .tools-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tools-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        .tools-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tools-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #ffc107;
+            color: #212529;
+            margin-right: 5px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+        }
+
+        /* Section containers styles */
+        .section-container {
+            margin-top: 40px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .tool-card {
+            background-color: var(--bg-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .tool-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            background-color: var(--card-bg);
+            padding: 5px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-name {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            padding-right: 60px; /* Make room for action buttons */
+        }
+
+        .tool-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .tool-link:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .tool-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .tool-action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-edit-btn {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .tool-delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .tool-action-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+        }
+
+        .image-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: contain;
+            margin-top: 10px;
+            background-color: var(--bg-color);
+            padding: 5px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .file-input-container {
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            background-color: var(--primary-color);
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 0.1px;
+            height: 0.1px;
+        }
+
+        .file-name {
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background-color: #ffc107;
+            color: #212529;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+        }
+
+        /* Tabs for admin panel */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section management styles */
+        .sections-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .sections-table th, .sections-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sections-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 500;
+        }
+
+        .sections-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .sections-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .admin-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions {
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <div class="container">
+        <header>
+            <a href="index.html" class="logo">SarvaLink 🔗</a>
+            <div class="header-actions">
+                <a href="index.html" class="btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <h1 class="section-title">
+                <i class="fas fa-cog"></i> Admin Panel
+            </h1>
+
+            <div class="tabs">
+                <div class="tab active" data-tab="tools">Manage Tools</div>
+                <div class="tab" data-tab="sections">Manage Sections</div>
+            </div>
+
+            <!-- Tools Tab Content -->
+            <div class="tab-content active" id="toolsTab">
+                <div class="admin-panel">
+                    <div class="panel-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-plus-circle"></i> Add New Tool
+                        </h2>
+
+                        <div class="alert alert-success" id="toolSuccessAlert">
+                            Tool added successfully!
+                        </div>
+
+                        <div class="alert alert-error" id="toolErrorAlert">
+                            Error adding tool. Please try again.
+                        </div>
+
+                        <form id="addToolForm">
+                            <div class="form-group">
+                                <label for="toolName">Tool Name</label>
+                                <input type="text" id="toolName" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="toolLink">Tool Link (URL)</label>
+                                <input type="url" id="toolLink" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="toolSection">Section</label>
+                                <select id="toolSection" class="form-control" required>
+                                    <option value="">Select a section</option>
+                                    <option value="Homepage Featured">Homepage Featured</option>
+                                    <!-- Dynamic sections will be loaded here -->
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="toolLogo">Tool Logo/Image</label>
+                                <div class="file-input-container">
+                                    <label for="toolLogo" class="file-input-label">
+                                        <i class="fas fa-upload"></i> Choose Image
+                                    </label>
+                                    <input type="file" id="toolLogo" class="file-input" accept="image/*">
+                                    <span class="file-name" id="toolFileName">No file chosen</span>
+                                </div>
+                                <img id="toolImagePreview" class="image-preview" src="#" alt="Image Preview">
+                            </div>
+
+                            <button type="submit" class="btn" id="toolSubmitBtn">
+                                <i class="fas fa-save"></i> Add Tool
+                            </button>
+                            <button type="button" class="btn btn-outline" id="toolCancelBtn" style="display: none; background-color: #6c757d; margin-left: 10px;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-list"></i> Manage Tools
+                        </h2>
+
+                        <div id="toolsTableContainer">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section-wise containers -->
+                <div id="dynamicSectionContainers">
+                    <!-- Dynamic sections will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Sections Tab Content -->
+            <div class="tab-content" id="sectionsTab">
+                <div class="admin-panel">
+                    <div class="panel-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-folder-plus"></i> Add New Section
+                        </h2>
+
+                        <div class="alert alert-success" id="sectionSuccessAlert">
+                            Section added successfully!
+                        </div>
+
+                        <div class="alert alert-error" id="sectionErrorAlert">
+                            Error adding section. Please try again.
+                        </div>
+
+                        <form id="addSectionForm">
+                            <div class="form-group">
+                                <label for="sectionName">Section Name</label>
+                                <input type="text" id="sectionName" class="form-control" required placeholder="e.g., Design Tools">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sectionIcon">Section Icon</label>
+                                <div class="file-input-container">
+                                    <label for="sectionIcon" class="file-input-label">
+                                        <i class="fas fa-upload"></i> Choose Icon
+                                    </label>
+                                    <input type="file" id="sectionIcon" class="file-input" accept="image/*">
+                                    <span class="file-name" id="sectionFileName">No file chosen</span>
+                                </div>
+                                <img id="sectionImagePreview" class="image-preview" src="#" alt="Icon Preview">
+                            </div>
+
+                            <button type="submit" class="btn" id="sectionSubmitBtn">
+                                <i class="fas fa-save"></i> Add Section
+                            </button>
+                            <button type="button" class="btn btn-outline" id="sectionCancelBtn" style="display: none; background-color: #6c757d; margin-left: 10px;">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="panel-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-th-list"></i> Manage Sections
+                        </h2>
+
+                        <div id="sectionsTableContainer">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+        
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        // Firebase configuration
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
+  authDomain: "new1-f9abc.firebaseapp.com",
+  projectId: "new1-f9abc",
+  storageBucket: "new1-f9abc.appspot.com", // ✅ Corrected from `.firebasestorage.app`
+  messagingSenderId: "188713961246",
+  appId: "1:188713961246:web:7cd412770c6c0256bc2b0f",
+  measurementId: "G-CV4Z5M462B" // optional, only used with Analytics
+};
+
+
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // DOM Elements - Tabs
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        // DOM Elements - Tools
+        const addToolForm = document.getElementById('addToolForm');
+        const toolName = document.getElementById('toolName');
+        const toolLink = document.getElementById('toolLink');
+        const toolSection = document.getElementById('toolSection');
+        const toolLogo = document.getElementById('toolLogo');
+        const toolFileName = document.getElementById('toolFileName');
+        const toolImagePreview = document.getElementById('toolImagePreview');
+        const toolSuccessAlert = document.getElementById('toolSuccessAlert');
+        const toolErrorAlert = document.getElementById('toolErrorAlert');
+        const toolsTableContainer = document.getElementById('toolsTableContainer');
+        const toolSubmitBtn = document.getElementById('toolSubmitBtn');
+        const toolCancelBtn = document.getElementById('toolCancelBtn');
+        
+        // DOM Elements - Sections
+        const addSectionForm = document.getElementById('addSectionForm');
+        const sectionName = document.getElementById('sectionName');
+        const sectionIcon = document.getElementById('sectionIcon');
+        const sectionFileName = document.getElementById('sectionFileName');
+        const sectionImagePreview = document.getElementById('sectionImagePreview');
+        const sectionSuccessAlert = document.getElementById('sectionSuccessAlert');
+        const sectionErrorAlert = document.getElementById('sectionErrorAlert');
+        const sectionsTableContainer = document.getElementById('sectionsTableContainer');
+        const sectionSubmitBtn = document.getElementById('sectionSubmitBtn');
+        const sectionCancelBtn = document.getElementById('sectionCancelBtn');
+        
+        // DOM Elements - Other
+        const dynamicSectionContainers = document.getElementById('dynamicSectionContainers');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Global variables
+        let sections = [];
+
+        // Tab functionality
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}Tab`).classList.add('active');
+            });
+        });
+
+        // Theme Toggle Functionality
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        function updateTheme() {
+            if (isDarkMode) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        }
+        
+        updateTheme();
+        
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            updateTheme();
+        });
+
+        // File input handling - Tool Logo
+        toolLogo.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                toolFileName.textContent = file.name;
+                
+                // Show image preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    toolImagePreview.src = e.target.result;
+                    toolImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                toolFileName.textContent = 'No file chosen';
+                toolImagePreview.style.display = 'none';
+            }
+        });
+
+        // File input handling - Section Icon
+        sectionIcon.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                sectionFileName.textContent = file.name;
+                
+                // Show image preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    sectionImagePreview.src = e.target.result;
+                    sectionImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                sectionFileName.textContent = 'No file chosen';
+                sectionImagePreview.style.display = 'none';
+            }
+        });
+
+        // Add Tool Form Submission
+        addToolForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Hide any previous alerts
+            toolSuccessAlert.style.display = 'none';
+            toolErrorAlert.style.display = 'none';
+            
+            const name = toolName.value.trim();
+            const link = toolLink.value.trim();
+            const section = toolSection.value;
+            const logoFile = toolLogo.files[0];
+            
+            if (!name || !link || !section) {
+                toolErrorAlert.textContent = 'Please fill in all required fields.';
+                toolErrorAlert.style.display = 'block';
+                return;
+            }
+            
+            // Show loading state
+            toolSubmitBtn.disabled = true;
+            toolSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            try {
+                let logoUrl = '';
+                
+                // Upload logo if provided
+                if (logoFile) {
+                    const fileId = Date.now().toString();
+                    const fileRef = storage.ref(`tool-logos/${fileId}_${logoFile.name}`);
+                    await fileRef.put(logoFile);
+                    logoUrl = await fileRef.getDownloadURL();
+                }
+                
+                // Check if we're in edit mode
+                if (addToolForm.dataset.editId) {
+                    // Update existing tool
+                    const id = addToolForm.dataset.editId;
+                    const updateData = {
+                        name,
+                        link,
+                        section,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    // Only update logo if a new one was uploaded
+                    if (logoUrl) {
+                        updateData.logoUrl = logoUrl;
+                    }
+                    
+                    await db.collection('tools').doc(id).update(updateData);
+                    
+                    toolSuccessAlert.textContent = 'Tool updated successfully!';
+                    
+                    // Reset edit mode
+                    resetToolForm();
+                } else {
+                    // Add new tool
+                    await db.collection('tools').add({
+                        name,
+                        link,
+                        section,
+                        logoUrl,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    toolSuccessAlert.textContent = 'Tool added successfully!';
+                    
+                    // Reset form
+                    resetToolForm();
+                }
+                
+                // Show success message
+                toolSuccessAlert.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    toolSuccessAlert.style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error with tool:", error);
+                toolErrorAlert.textContent = 'Error processing tool. Please try again.';
+                toolErrorAlert.style.display = 'block';
+            } finally {
+                // Reset button state
+                toolSubmitBtn.disabled = false;
+                toolSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Add Tool';
+            }
+        });
+
+        // Add Section Form Submission
+        addSectionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Hide any previous alerts
+            sectionSuccessAlert.style.display = 'none';
+            sectionErrorAlert.style.display = 'none';
+            
+            const name = sectionName.value.trim();
+            const iconFile = sectionIcon.files[0];
+            
+            if (!name) {
+                sectionErrorAlert.textContent = 'Please enter a section name.';
+                sectionErrorAlert.style.display = 'block';
+                return;
+            }
+            
+            // Show loading state
+            sectionSubmitBtn.disabled = true;
+            sectionSubmitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            try {
+                let iconUrl = '';
+                
+                // Upload icon if provided
+                if (iconFile) {
+                    const fileId = Date.now().toString();
+                    const fileRef = storage.ref(`section-icons/${fileId}_${iconFile.name}`);
+                    await fileRef.put(iconFile);
+                    iconUrl = await fileRef.getDownloadURL();
+                }
+                
+                // Check if we're in edit mode
+                if (addSectionForm.dataset.editId) {
+                    // Update existing section
+                    const id = addSectionForm.dataset.editId;
+                    const updateData = {
+                        name,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    // Only update icon if a new one was uploaded
+                    if (iconUrl) {
+                        updateData.iconUrl = iconUrl;
+                    }
+                    
+                    await db.collection('sections').doc(id).update(updateData);
+                    
+                    sectionSuccessAlert.textContent = 'Section updated successfully!';
+                    
+                    // Reset edit mode
+                    resetSectionForm();
+                } else {
+                    // Add new section
+                    await db.collection('sections').add({
+                        name,
+                        iconUrl,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    sectionSuccessAlert.textContent = 'Section added successfully!';
+                    
+                    // Reset form
+                    resetSectionForm();
+                }
+                
+                // Show success message
+                sectionSuccessAlert.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    sectionSuccessAlert.style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error with section:", error);
+                sectionErrorAlert.textContent = 'Error processing section. Please try again.';
+                sectionErrorAlert.style.display = 'block';
+            } finally {
+                // Reset button state
+                sectionSubmitBtn.disabled = false;
+                sectionSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Add Section';
+            }
+        });
+
+        // Cancel button handlers
+        toolCancelBtn.addEventListener('click', resetToolForm);
+        sectionCancelBtn.addEventListener('click', resetSectionForm);
+
+        function resetToolForm() {
+            // Reset form fields
+            addToolForm.reset();
+            
+            // Reset image preview
+            toolImagePreview.style.display = 'none';
+            toolFileName.textContent = 'No file chosen';
+            
+            // Change button text back to Add
+            toolSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Add Tool';
+            
+            // Hide cancel button
+            toolCancelBtn.style.display = 'none';
+            
+            // Remove edit ID
+            delete addToolForm.dataset.editId;
+        }
+
+        function resetSectionForm() {
+            // Reset form fields
+            addSectionForm.reset();
+            
+            // Reset image preview
+            sectionImagePreview.style.display = 'none';
+            sectionFileName.textContent = 'No file chosen';
+            
+            // Change button text back to Add
+            sectionSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Add Section';
+            
+            // Hide cancel button
+            sectionCancelBtn.style.display = 'none';
+            
+            // Remove edit ID
+            delete addSectionForm.dataset.editId;
+        }
+
+        // Helper function to truncate long URLs
+        function truncateUrl(url) {
+            const maxLength = 30;
+            return url.length > maxLength ? url.substring(0, maxLength) + '...' : url;
+        }
+        
+        // Edit Tool
+        async function editTool(id) {
+            try {
+                const doc = await db.collection('tools').doc(id).get();
+                
+                if (!doc.exists) {
+                    alert('Tool not found!');
+                    return;
+                }
+                
+                const tool = doc.data();
+                
+                // Fill the form with tool data
+                toolName.value = tool.name;
+                toolLink.value = tool.link;
+                toolSection.value = tool.section;
+                
+                // Show image preview if available
+                if (tool.logoUrl) {
+                    toolImagePreview.src = tool.logoUrl;
+                    toolImagePreview.style.display = 'block';
+                    toolFileName.textContent = 'Current logo';
+                } else {
+                    toolImagePreview.style.display = 'none';
+                    toolFileName.textContent = 'No file chosen';
+                }
+                
+                // Change form submit button to update
+                toolSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Update Tool';
+                
+                // Show cancel button
+                toolCancelBtn.style.display = 'inline-flex';
+                
+                // Store the tool ID in the form
+                addToolForm.dataset.editId = id;
+                
+                // Scroll to form
+                addToolForm.scrollIntoView({ behavior: 'smooth' });
+                
+                // Switch to tools tab if not already active
+                if (!document.querySelector('.tab[data-tab="tools"]').classList.contains('active')) {
+                    document.querySelector('.tab[data-tab="tools"]').click();
+                }
+                
+            } catch (error) {
+                console.error("Error fetching tool:", error);
+                alert('Failed to load tool data. Please try again.');
+            }
+        }
+        
+        // Edit Section
+        async function editSection(id) {
+            try {
+                const doc = await db.collection('sections').doc(id).get();
+                
+                if (!doc.exists) {
+                    alert('Section not found!');
+                    return;
+                }
+                
+                const section = doc.data();
+                
+                // Fill the form with section data
+                sectionName.value = section.name;
+                
+                // Show image preview if available
+                if (section.iconUrl) {
+                    sectionImagePreview.src = section.iconUrl;
+                    sectionImagePreview.style.display = 'block';
+                    sectionFileName.textContent = 'Current icon';
+                } else {
+                    sectionImagePreview.style.display = 'none';
+                    sectionFileName.textContent = 'No file chosen';
+                }
+                
+                // Change form submit button to update
+                sectionSubmitBtn.innerHTML = '<i class="fas fa-save"></i> Update Section';
+                
+                // Show cancel button
+                sectionCancelBtn.style.display = 'inline-flex';
+                
+                // Store the section ID in the form
+                addSectionForm.dataset.editId = id;
+                
+                // Scroll to form
+                addSectionForm.scrollIntoView({ behavior: 'smooth' });
+                
+                // Switch to sections tab if not already active
+                if (!document.querySelector('.tab[data-tab="sections"]').classList.contains('active')) {
+                    document.querySelector('.tab[data-tab="sections"]').click();
+                }
+                
+            } catch (error) {
+                console.error("Error fetching section:", error);
+                alert('Failed to load section data. Please try again.');
+            }
+        }
+        
+        // Delete Tool
+        async function deleteTool(id) {
+            if (!confirm('Are you sure you want to delete this tool?')) {
+                return;
+            }
+            
+            try {
+                // Get the tool data first to check if it has a logo
+                const doc = await db.collection('tools').doc(id).get();
+                if (doc.exists) {
+                    const tool = doc.data();
+                    
+                    // Delete the logo from storage if it exists
+                    if (tool.logoUrl) {
+                        try {
+                            // Extract the path from the URL
+                            const logoPath = decodeURIComponent(tool.logoUrl.split('/o/')[1].split('?')[0]);
+                            await storage.ref(logoPath).delete();
+                        } catch (storageError) {
+                            console.error("Error deleting logo from storage:", storageError);
+                            // Continue with deletion even if logo deletion fails
+                        }
+                    }
+                }
+                
+                // Delete the tool document
+                await db.collection('tools').doc(id).delete();
+                
+                // Show success message
+                toolSuccessAlert.textContent = 'Tool deleted successfully!';
+                toolSuccessAlert.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    toolSuccessAlert.style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error deleting tool:", error);
+                toolErrorAlert.textContent = 'Error deleting tool. Please try again.';
+                toolErrorAlert.style.display = 'block';
+            }
+        }
+        
+        // Delete Section
+        async function deleteSection(id) {
+            if (!confirm('Are you sure you want to delete this section? All tools in this section will need to be reassigned.')) {
+                return;
+            }
+            
+            try {
+                // Get the section data first to check if it has an icon
+                const doc = await db.collection('sections').doc(id).get();
+                if (doc.exists) {
+                    const section = doc.data();
+                    
+                    // Delete the icon from storage if it exists
+                    if (section.iconUrl) {
+                        try {
+                            // Extract the path from the URL
+                            const iconPath = decodeURIComponent(section.iconUrl.split('/o/')[1].split('?')[0]);
+                            await storage.ref(iconPath).delete();
+                        } catch (storageError) {
+                            console.error("Error deleting icon from storage:", storageError);
+                            // Continue with deletion even if icon deletion fails
+                        }
+                    }
+                }
+                
+                // Delete the section document
+                await db.collection('sections').doc(id).delete();
+                
+                // Show success message
+                sectionSuccessAlert.textContent = 'Section deleted successfully!';
+                sectionSuccessAlert.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    sectionSuccessAlert.style.display = 'none';
+                }, 3000);
+                
+            } catch (error) {
+                console.error("Error deleting section:", error);
+                sectionErrorAlert.textContent = 'Error deleting section. Please try again.';
+                sectionErrorAlert.style.display = 'block';
+            }
+        }
+
+        // Initialize real-time listeners
+        function initializeApp() {
+            // Set up real-time listener for sections
+            setupSectionsListener();
+            
+            // Set up real-time listener for tools table
+            setupToolsTableListener();
+        }
+
+        // Set up real-time listener for sections
+        function setupSectionsListener() {
+            db.collection('sections')
+                .orderBy('createdAt', 'asc')
+                .onSnapshot(snapshot => {
+                    // Update sections array
+                    sections = snapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    
+                    // Update sections table
+                    updateSectionsTable(snapshot);
+                    
+                    // Update tool section dropdown
+                    updateToolSectionDropdown();
+                    
+                    // Update dynamic section containers
+                    updateDynamicSectionContainers();
+                    
+                    // Set up real-time listeners for each section's tools
+                    setupDynamicSectionListeners();
+                }, error => {
+                    console.error("Error listening to sections collection:", error);
+                    sectionsTableContainer.innerHTML = '<div class="empty-state">Failed to load sections. Please try again later.</div>';
+                });
+        }
+
+        // Update sections table with snapshot data
+        function updateSectionsTable(snapshot) {
+            if (snapshot.empty) {
+                sectionsTableContainer.innerHTML = '<div class="empty-state">No sections available yet</div>';
+                return;
+            }
+            
+            let tableHTML = `
+                <table class="sections-table">
+                    <thead>
+                        <tr>
+                            <th>Icon</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            snapshot.forEach(doc => {
+                const section = { id: doc.id, ...doc.data() };
+                const iconHtml = section.iconUrl ? 
+                    `<img src="${section.iconUrl}" alt="${section.name}" class="section-icon">` : 
+                    '<div style="width: 30px; height: 30px; background-color: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-folder" style="color: #aaa;"></i></div>';
+                
+                tableHTML += `
+                    <tr data-id="${section.id}">
+                        <td>${iconHtml}</td>
+                        <td>${section.name}</td>
+                        <td>
+                            <button class="action-btn edit-btn section-edit-btn" data-id="${section.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn section-delete-btn" data-id="${section.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+            
+            sectionsTableContainer.innerHTML = tableHTML;
+            
+            // Add event listeners for edit and delete buttons
+            document.querySelectorAll('.section-edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editSection(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.section-delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteSection(btn.dataset.id));
+            });
+        }
+
+        // Update tool section dropdown with available sections
+        function updateToolSectionDropdown() {
+            // Keep the default options
+            let options = `
+                <option value="">Select a section</option>
+                <option value="Homepage Featured">Homepage Featured</option>
+            `;
+            
+            // Add dynamic sections
+            sections.forEach(section => {
+                options += `<option value="${section.name}">${section.name}</option>`;
+            });
+            
+            // Update the dropdown
+            toolSection.innerHTML = options;
+        }
+
+        // Update dynamic section containers
+        function updateDynamicSectionContainers() {
+            // Start with Homepage Featured section
+            let containersHTML = `
+                <!-- Homepage Featured Section -->
+                <div class="section-container" id="homepageFeaturedSection">
+                    <h2 class="section-title">
+                        <i class="fas fa-star"></i> Homepage Featured
+                    </h2>
+                    <div class="tools-grid" id="homepageFeaturedGrid">
+                        <div class="loading">
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add dynamic sections
+            sections.forEach(section => {
+                const sectionId = section.name.toLowerCase().replace(/\s+/g, '-');
+                const iconHtml = section.iconUrl ? 
+                    `<img src="${section.iconUrl}" alt="${section.name}" style="width: 24px; height: 24px; object-fit: contain;">` : 
+                    `<i class="fas fa-folder"></i>`;
+                
+                containersHTML += `
+                    <!-- ${section.name} Section -->
+                    <div class="section-container" id="${sectionId}Section">
+                        <h2 class="section-title">
+                            ${iconHtml} ${section.name}
+                        </h2>
+                        <div class="tools-grid" id="${sectionId}Grid">
+                            <div class="loading">
+                                <div class="loading-spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Update the container
+            dynamicSectionContainers.innerHTML = containersHTML;
+        }
+
+        // Set up real-time listeners for each section's tools
+        function setupDynamicSectionListeners() {
+            // Set up listener for Homepage Featured
+            setupSectionListener('Homepage Featured', document.getElementById('homepageFeaturedGrid'));
+            
+            // Set up listeners for dynamic sections
+            sections.forEach(section => {
+                const sectionId = section.name.toLowerCase().replace(/\s+/g, '-');
+                const gridElement = document.getElementById(`${sectionId}Grid`);
+                
+                if (gridElement) {
+                    setupSectionListener(section.name, gridElement);
+                }
+            });
+        }
+
+        // Set up real-time listener for tools table
+        function setupToolsTableListener() {
+            db.collection('tools')
+                .orderBy('createdAt', 'desc')
+                .onSnapshot(snapshot => {
+                    // Update the tools table
+                    updateToolsTable(snapshot);
+                }, error => {
+                    console.error("Error listening to tools collection:", error);
+                    toolsTableContainer.innerHTML = '<div class="empty-state">Failed to load tools. Please try again later.</div>';
+                });
+        }
+
+        // Update tools table with snapshot data
+        function updateToolsTable(snapshot) {
+            if (snapshot.empty) {
+                toolsTableContainer.innerHTML = '<div class="empty-state">No tools available yet</div>';
+                return;
+            }
+            
+            let tableHTML = `
+                <table class="tools-table">
+                    <thead>
+                        <tr>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Link</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            snapshot.forEach(doc => {
+                const tool = { id: doc.id, ...doc.data() };
+                const logoHtml = tool.logoUrl ? 
+                    `<img src="${tool.logoUrl}" alt="${tool.name}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 4px;">` : 
+                    '<div style="width: 40px; height: 40px; background-color: #f0f0f0; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="color: #aaa;"></i></div>';
+                
+                tableHTML += `
+                    <tr data-id="${tool.id}">
+                        <td>${logoHtml}</td>
+                        <td>${tool.name}</td>
+                        <td>${tool.section}</td>
+                        <td>
+                            <a href="${tool.link}" target="_blank">${truncateUrl(tool.link)}</a>
+                        </td>
+                        <td>
+                            <button class="action-btn edit-btn tool-edit-btn" data-id="${tool.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn tool-delete-btn" data-id="${tool.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+            
+            toolsTableContainer.innerHTML = tableHTML;
+            
+            // Add event listeners for edit and delete buttons
+            document.querySelectorAll('.tool-edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => editTool(btn.dataset.id));
+            });
+            
+            document.querySelectorAll('.tool-delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteTool(btn.dataset.id));
+            });
+        }
+
+        // Set up real-time listener for a specific section
+        function setupSectionListener(sectionName, container) {
+            if (!container) return;
+            
+            db.collection('tools')
+                .where('section', '==', sectionName)
+                .onSnapshot(snapshot => {
+                    // Update the section container
+                    updateSectionContainer(snapshot, container, sectionName);
+                }, error => {
+                    console.error(`Error listening to ${sectionName} section:`, error);
+                    container.innerHTML = '<div class="empty-state">Failed to load tools. Please try again later.</div>';
+                });
+        }
+
+        // Update section container with snapshot data
+        function updateSectionContainer(snapshot, container, sectionName) {
+            if (!container) return;
+            
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="empty-state">No tools available in this category</div>';
+                return;
+            }
+            
+            let html = '';
+            snapshot.forEach(doc => {
+                const tool = { id: doc.id, ...doc.data() };
+                const isFeatured = sectionName === 'Homepage Featured';
+                
+                html += `
+                    <div class="tool-card" data-id="${tool.id}">
+                        ${isFeatured ? '<div class="featured-badge"><i class="fas fa-star"></i> Featured</div>' : ''}
+                        <div class="tool-actions">
+                            <button class="tool-action-btn tool-edit-btn" data-id="${tool.id}" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="tool-action-btn tool-delete-btn" data-id="${tool.id}" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        ${tool.logoUrl ? `<img src="${tool.logoUrl}" alt="${tool.name}" class="tool-logo">` : ''}
+                        <h3 class="tool-name">${tool.name}</h3>
+                        <a href="${tool.link}" target="_blank" class="tool-link">Open Tool</a>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            
+            // Add event listeners for edit and delete buttons in cards
+            container.querySelectorAll('.tool-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent event bubbling
+                    editTool(btn.dataset.id);
+                });
+            });
+            
+            container.querySelectorAll('.tool-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent event bubbling
+                    deleteTool(btn.dataset.id);
+                });
+            });
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+
+    <!-- Firebase App (required) -->
+<script src="https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"></script>
+
+
+
+
+</body>
+</html>
