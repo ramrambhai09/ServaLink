@@ -1,346 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SarvaLink</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Servalink Dark/Light Mode</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <style>
     :root {
       --primary: #007AFF;
       --primary-light: rgba(0, 122, 255, 0.1);
       --text: #FFFFFF;
       --text-secondary: rgba(255, 255, 255, 0.6);
-      --bg: #000000;
+      --bg: #1B1D2A;
       --card-bg: #1C1C1E;
-      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      --border-radius: 16px;
-      --spacing: 16px;
+      --sidebar-bg: #1A1C29;
+      --right-sidebar-bg: #1A1C29;
+      --border-color: rgba(255, 255, 255, 0.1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    [data-theme="light"] {
+      --primary: #007AFF;
+      --primary-light: rgba(0, 122, 255, 0.1);
+      --text: #000000;
+      --text-secondary: rgba(0, 0, 0, 0.6);
+      --bg: #FFFFFF;
+      --card-bg: #F5F5F5;
+      --sidebar-bg: #F5F5F5;
+      --right-sidebar-bg: #F5F5F5;
+      --border-color: rgba(0, 0, 0, 0.1);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: "Inter", sans-serif;
       background-color: var(--bg);
       color: var(--text);
-      min-height: 100vh;
-      padding-top: 70px;
-      position: relative;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
-
-
-    /* Fullscreen video background */
-#bg-video {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100vw;
-  min-height: 100vh;
-  z-index: -1;
-  object-fit: cover;
-}
-
-/* Main content should appear on top */
-.main-content {
-  position: relative;
-  z-index: 1;
-}
-
-/* Optional: Hide black background if set earlier */
-body {
-  margin: 0;
-  background: transparent;
-  overflow-x: hidden;
-}
-
-
-
-
-
-
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 200px 200px;
-      z-index: -1;
-      opacity: 0.4;
-    }
-
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background-color: rgba(28, 28, 30, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 var(--spacing);
-      z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-item {
-      width: 33.33%;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-item.left {
-      justify-content: flex-start;
-    }
-
-    .nav-item.center {
-      justify-content: center;
-      flex-direction: column;
-    }
-
-    .nav-item.right {
-      justify-content: flex-end;
-      gap: 12px;
-    }
-
-    .app-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      object-fit: contain;
-    }
-
-    .app-title {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .search-container {
-      position: relative;
-      width: 100%;
-      max-width: 180px;
-    }
-
-    .search-input {
-      width: 100%;
-      height: 28px;
-      border-radius: 10px;
-      background-color: rgba(118, 118, 128, 0.24);
-      border: none;
-      padding: 0 28px 0 10px;
-      color: var(--text);
-      font-size: 13px;
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 8px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-secondary);
-      font-size: 13px;
-    }
-
-    .clock {
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .admin-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background-color: var(--primary-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .admin-btn:hover {
-      background-color: var(--primary);
-      color: white;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: var(--spacing);
-    }
-
-    .section {
-      margin-bottom: 40px;
-      padding: 24px;
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 10px;
-    }
-
-    .section-icon {
-      width: 24px;
-      height: 24px;
-      margin-right: 12px;
-      object-fit: contain;
-    }
-
-    .section-title {
-      font-size: 20px;
-      font-weight: 600;
-    }
-
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .tool-card {
-      background-color: #2c2c2e;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: var(--card-shadow);
-      transition: 0.2s ease;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 122, 255, 0.2);
-    }
-
-    .tool-logo {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      margin-bottom: 12px;
-      border-radius: 10px;
-    }
-
-    .tool-name {
-      font-size: 15px;
-      font-weight: 500;
-      margin-bottom: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .tool-link {
-      display: inline-block;
-      width: 100%;
-      padding: 8px 0;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      text-align: center;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-    }
-
-    .tool-link:hover {
-      background-color: var(--primary);
-      color: white;
-    }
-
-   .chat-icon {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 50%;
-  padding: 15px;
-  font-size: 22px;
-  cursor: pointer;
-  z-index: 999;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.chatbox {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 300px;
-  height: 400px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  display: none;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 1000;
-  border: 1px solid #ccc;
-}
-
-.chatbox-header {
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.close-btn {
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.chatbox-body {
-  flex: 1;
-  padding: 10px;
-  font-size: 14px;
-  overflow-y: auto;
-}
-
-.chatbox-input {
-  display: flex;
-  border-top: 1px solid #ccc;
-}
-
-.chatbox-input input {
-  flex: 1;
-  border: none;
-  padding: 10px;
-  outline: none;
-}
-
-.chatbox-input button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 0 15px;
-  cursor: pointer;
-}
-
 
     .loading {
       display: flex;
@@ -363,160 +63,422 @@ body {
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 768px) {
-      .tools-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      }
-    }
 
-    @media (max-width: 480px) {
-      .tools-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      }
 
-      .search-container {
-        max-width: 140px;
-      }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== Section Styles ===== */
+.section {
+  margin-bottom: 24px;
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.section:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.section-header {
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
+  transition: all 0.3s ease;
+}
+
+.section-header:hover {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.15) 100%);
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.dropdown-icon {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--card-bg);
+}
+
+.section.active .section-content {
+  max-height: 2000px; /* Adjust based on content */
+  padding: 20px;
+}
+
+.section.active .dropdown-icon {
+  transform: rotate(180deg);
+  color: var(--primary);
+}
+
+/* ===== Tools Grid ===== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 5px; /* For focus states */
+}
+
+/* ===== Tool Cards ===== */
+.tool-card {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--primary);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.tool-card:hover::before {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+
+.tool-name {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+}
+
+.tool-description {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: var(--primary);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.tool-link:hover {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.tool-link:active {
+  transform: translateY(0);
+}
+
+/* ===== State Indicators ===== */
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.loading-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.empty-state, .error-state {
+  text-align: center;
+  padding: 30px 20px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  border: 1px dashed var(--border-color);
+}
+
+.empty-state p, .error-state p {
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.empty-state small, .error-state small {
+  color: var(--text-secondary);
+  opacity: 0.8;
+  font-size: 0.85rem;
+}
+
+/* ===== Animations ===== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tool-card {
+  animation: fadeIn 0.4s ease forwards;
+  opacity: 0;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    padding: 16px 20px;
+  }
+  
+  .tool-card {
+    padding: 18px;
+  }
+}
+
+
+
+  .rotate-180 {
+    transform: rotate(180deg);
+    transition: transform 0.3s ease;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.tools-grid {
+  transition: grid-template-rows 0.3s ease;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #007AFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+    /* Add other necessary styles here */
   </style>
 </head>
-<script>
-  function toggleChatbox() {
-    const chatbox = document.getElementById("chatbox");
-    chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
-  }
-</script>
+<body class="bg-[#1B1D2A] text-white transition-colors duration-300" id="body" data-theme="dark">
 
-<body>
-  <nav class="navbar">
-    <div class="nav-item left">
-      <img src="your-logo.png" alt="Logo" class="app-logo"/>
-      <span class="site-name">SarvaLink</span>
-    </div>
-    <div class="nav-item center">
-   
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search..." id="searchInput"/>
-        <i class="fas fa-search search-icon"></i>
+  <div class="min-h-screen flex flex-col md:flex-row overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="bg-[#1A1C29] w-full md:w-52 flex-shrink-0 flex flex-row md:flex-col text-gray-400 text-sm select-none transition-colors duration-300"
+    >
+      <div class="flex items-center justify-center md:justify-start gap-2 px-4 py-3 border-b border-[#2A2C3B] w-full">
+        <img src="https://storage.googleapis.com/a1aa/image/6025c999-883f-4111-389e-e9385d06c3a8.jpg"
+          alt="Servalink logo" class="w-12 h-12 rounded" />
+        <span class="hidden md:inline text-white font-semibold">Servalink</span>
       </div>
-    </div>
-    <div class="nav-item right">
-      <div class="clock" id="clock"></div>
-      <div class="admin-btn" onclick="window.location.href='admin.html'">
-        <i class="fas fa-cog"></i>
+      <nav class="flex md:flex-col gap-3 px-3 py-4 overflow-auto w-full justify-around">
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-home"></i><span class="hidden md:inline">Home</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-bell"></i><span class="hidden md:inline">Notification</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="toggleChatbox()">
+          <i class="fas fa-comments"></i><span class="hidden md:inline">Chatbox</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-th-large"></i><span class="hidden md:inline">My App</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-user-shield"></i><span class="hidden md:inline">Admin</span>
+        </button>
+        <button id="theme-toggle"
+          class="flex items-center gap-3 text-xs cursor-pointer hover:text-white transition-colors duration-200"
+          title="Toggle Dark/Light Mode">
+          <i id="theme-icon" class="fas fa-moon"></i>
+          <span class="hidden md:inline">Dark/Light</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-clock"></i><span class="hidden md:inline live-time">Live Time</span>
+        </button>
+        <button class="flex items-center gap-3 hover:text-white text-xs">
+          <i class="fas fa-calendar-day"></i><span class="hidden md:inline live-date">Live Date</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-4 md:p-6 flex flex-col gap-6 overflow-auto" id="container">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <h1 class="text-white font-semibold text-2xl select-none">Welcome to Servalink</h1>
+        <div class="relative w-full md:max-w-md">
+          <input type="search" placeholder="Search"
+            class="w-full rounded-md bg-[#2A2C3B] text-gray-300 placeholder-gray-500 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3B30] transition-colors duration-300" />
+          <i
+            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+        </div>
       </div>
+      
+      <!-- Sections Container -->
+      <div class="container" id="sectionsContainer">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div>Loading tools...</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="bg-[#1A1C29] w-full md:w-64 flex flex-col p-4 text-gray-400 text-xs transition-colors duration-300" id="right-sidebar">
+      <h2 class="text-white font-semibold mb-4 flex items-center gap-2">
+        <i class="fas fa-star"></i> Task Manager & Timer
+      </h2>
+      <input id="new-task" type="text" placeholder="Add new task..." class="w-full bg-[#2A2C3B] text-white px-3 py-2 mb-4 rounded focus:outline-none" />
+      <ul id="task-list" class="mb-6 space-y-2"></ul>
+      <button id="start-timer" class="bg-[#FF3B30] hover:bg-red-600 text-white px-3 py-2 rounded mb-2 text-sm">Start</button>
+      <div class="timer-display text-white text-lg font-mono">00:00:00</div>
+    </aside>
+  </div>
+
+  <!-- Chatbox -->
+  <div class="chatbox" id="chatbox" style="display: none;">
+    <div class="chatbox-header">
+      Servalink Chat
+      <span class="close-btn" onclick="toggleChatbox()">&times;</span>
     </div>
-  </nav>
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <div class="container" id="sectionsContainer">
-    <div class="loading">
-      <div class="loading-spinner"></div>
-      <div>Loading tools...</div>
+    <div class="chatbox-body">
+      <p>Hello! How can I help you today?</p>
+    </div>
+    <div class="chatbox-input">
+      <input type="text" placeholder="Type a message...">
+      <button><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
-
-
-
-
-
-
-
-  <!-- Video Background -->
-<video autoplay muted loop id="bg-video">
-  <source src="your-video.mp4" type="video/mp4" />
-  Your browser does not support HTML5 video.
-</video>
-
-<!-- Your Main Content on top of video -->
-<div class="main-content">
-  <!-- Navbar, buttons, chat icon, etc. -->
-</div>
-
-
-
-
-
-
-
-  <!-- Chat Icon -->
-<div class="chat-icon" onclick="toggleChatbox()">
-  <i class="fas fa-comment-dots"></i>
-</div>
-
-<!-- Chatbox -->
-<div class="chatbox" id="chatbox">
-  <div class="chatbox-header">
-    SarvaLink
-    <span class="close-btn" onclick="toggleChatbox()">&times;</span>
-  </div>
-  <div class="chatbox-body">
-    <p>Hello! How can we help you?</p>
-    <!-- You can add AI chatbot integration here -->
-  </div>
-  <div class="chatbox-input">
-    <input type="text" placeholder="Type a message...">
-    <button><i class="fas fa-paper-plane"></i></button>
-  </div>
-</div>
-
-
-
-
-
-
-<!-- Coming Soon Download Icon -->
-<div class="chat-icon" style="bottom: 90px;" onclick="showComingSoon()">
-  <i class="fas fa-cloud-download-alt"></i>
-</div>
-<div style="position: fixed; bottom: 70px; right: 24px; font-size: 12px; color: var(--text-secondary);"></div>
-
-<!-- Toast Message -->
-<div id="comingSoonToast" style="display: none; position: fixed; bottom: 130px; right: 24px; background: #333; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 14px; z-index: 1000;">
-  App is Coming Soon 🚀
-</div>
-
-<script>
-  function showComingSoon() {
-    const toast = document.getElementById("comingSoonToast");
-    toast.style.display = "block";
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, 3000);
-  }
-</script>
-
-
-
-
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
   <script>
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.getElementById('body');
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = body.getAttribute('data-theme') === 'dark';
+      body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      themeIcon.classList.toggle('fa-moon', !isDark);
+      themeIcon.classList.toggle('fa-sun', isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+
+    // Initialize theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    body.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'light') {
+      themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    // Clock functionality
+    function updateClock() {
+      const now = new Date();
+      document.querySelectorAll(".live-time").forEach(el => {
+        el.textContent = now.toLocaleTimeString();
+      });
+      document.querySelectorAll(".live-date").forEach(el => {
+        el.textContent = now.toLocaleDateString(undefined, {
+          weekday: "long", year: "numeric", month: "long", day: "numeric"
+        });
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Chatbox toggle
+    function toggleChatbox() {
+      const chatbox = document.getElementById("chatbox");
+      chatbox.style.display = chatbox.style.display === "none" ? "block" : "none";
+    }
+
+    // Firebase initialization
     const firebaseConfig = {
       apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
       authDomain: "new1-f9abc.firebaseapp.com",
@@ -526,29 +488,11 @@ body {
       appId: "1:188713961246:web:7cd412770c6c0256bc2b0f"
     };
 
+    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12 || 12;
-      document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds} ${ampm}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-      const searchTerm = e.target.value.toLowerCase();
-      document.querySelectorAll('.tool-card').forEach(card => {
-        const name = card.querySelector('.tool-name').textContent.toLowerCase();
-        card.style.display = name.includes(searchTerm) ? 'block' : 'none';
-      });
-    });
-
+    // Load sections and tools
     function loadSectionsAndTools() {
       const container = document.getElementById("sectionsContainer");
       db.collection("sections").get().then(sectionSnap => {
@@ -559,20 +503,18 @@ body {
         container.innerHTML = '';
         sectionSnap.forEach(sectionDoc => {
           const section = sectionDoc.data();
-          const sectionId = sectionDoc.id;
           const sectionElement = document.createElement('div');
           sectionElement.className = 'section';
           sectionElement.innerHTML = `
             <div class="section-header">
-              <img src="${section.iconUrl}" class="section-icon" />
               <h2 class="section-title">${section.name}</h2>
             </div>
-            <div class="tools-grid" id="tools-${sectionId}"></div>
+            <div class="tools-grid" id="tools-${sectionDoc.id}"></div>
           `;
           container.appendChild(sectionElement);
 
           db.collection("tools").where("section", "==", section.name).get().then(toolSnap => {
-            const toolGrid = document.getElementById(`tools-${sectionId}`);
+            const toolGrid = document.getElementById(`tools-${sectionDoc.id}`);
             if (toolSnap.empty) {
               toolGrid.innerHTML = '<div class="no-results">No tools in this section</div>';
               return;
@@ -582,7 +524,6 @@ body {
               const toolCard = document.createElement('div');
               toolCard.className = 'tool-card';
               toolCard.innerHTML = `
-                <img src="${tool.logoUrl}" class="tool-logo" />
                 <div class="tool-name">${tool.name}</div>
                 <a href="${tool.link}" target="_blank" class="tool-link">Open</a>
               `;
@@ -602,5 +543,266 @@ body {
 
     document.addEventListener("DOMContentLoaded", loadSectionsAndTools);
   </script>
+
+  <main class="flex-1 p-4 md:p-6 flex flex-col gap-6 overflow-auto" id="container">
+  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <h1 class="text-white font-semibold text-2xl select-none">Welcome to Servalink</h1>
+    <div class="relative w-full md:max-w-md">
+      <input type="search" placeholder="Search" id="mainSearch"
+        class="w-full rounded-md bg-[#2A2C3B] text-gray-300 placeholder-gray-500 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3B30] transition-colors duration-300" />
+      <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+    </div>
+  </div>
+  
+  <!-- Dynamic Sections Container -->
+  <div id="sectionsContainer" class="space-y-6"></div>
+</main>
+
+<script>
+
+
+// Firebase Data Loading Function
+function loadSectionsWithDropdowns() {
+  const container = document.getElementById("sectionsContainer");
+  
+  db.collection("sections").orderBy("order").get().then(sectionSnap => {
+    container.innerHTML = '';
+    
+    if (sectionSnap.empty) {
+      container.innerHTML = '<div class="text-gray-400">No sections found</div>';
+      return;
+    }
+
+    sectionSnap.forEach(sectionDoc => {
+      const section = sectionDoc.data();
+      const sectionId = sectionDoc.id;
+      
+      // Create section with dropdown
+      const sectionHTML = `
+        <div class="section-container bg-[#2A2C3B] rounded-lg overflow-hidden">
+          <div class="section-header flex justify-between items-center p-4 cursor-pointer border-b border-[#3A3C4B]">
+            <h2 class="text-lg font-semibold flex items-center gap-3">
+              <i class="${section.icon || 'fas fa-folder'}"></i>
+              ${section.name}
+            </h2>
+            <i class="fas fa-chevron-down transition-transform duration-200"></i>
+          </div>
+          
+          <div class="section-content hidden p-4 bg-[#1E202A]">
+            <div class="tools-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" 
+                 id="tools-${sectionId}">
+              <div class="loading-spinner mx-auto col-span-full"></div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      container.insertAdjacentHTML('beforeend', sectionHTML);
+      
+      // Load tools for this section
+      loadToolsForSection(sectionId, section.name);
+      
+      // Add click event for dropdown toggle
+      const header = container.lastElementChild.querySelector('.section-header');
+      header.addEventListener('click', function() {
+        const content = this.nextElementSibling;
+        const icon = this.querySelector('.fa-chevron-down');
+        
+        content.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+  }).catch(error => {
+    console.error("Error loading sections:", error);
+    container.innerHTML = `
+      <div class="error-state p-4 bg-red-900/20 rounded-lg">
+        <p class="text-red-400">Failed to load sections. Please try again.</p>
+        <button onclick="loadSectionsWithDropdowns()" 
+                class="mt-2 px-4 py-2 bg-[#FF3B30] rounded-md text-sm">
+          Retry
+        </button>
+      </div>`;
+  });
+}
+
+// Load Tools for Each Section
+function loadToolsForSection(sectionId, sectionName) {
+  const toolsContainer = document.getElementById(`tools-${sectionId}`);
+  
+  db.collection("tools")
+    .where("section", "==", sectionName)
+    .orderBy("name")
+    .get()
+    .then(toolSnap => {
+      toolsContainer.innerHTML = '';
+      
+      if (toolSnap.empty) {
+        toolsContainer.innerHTML = '<div class="col-span-full text-gray-400 text-center py-4">No tools found</div>';
+        return;
+      }
+      
+      toolSnap.forEach(toolDoc => {
+        const tool = toolDoc.data();
+        const toolHTML = `
+          <div class="tool-card bg-[#2A2C3B] rounded-lg p-3 hover:bg-[#3A3C4B] transition-colors">
+            <div class="flex items-center gap-3 mb-2">
+              ${tool.iconUrl ? `
+                <img src="${tool.iconUrl}" class="w-8 h-8 object-contain" />
+              ` : `
+                <div class="w-8 h-8 flex items-center justify-center bg-[#007AFF]/20 text-[#007AFF] rounded-lg">
+                  <i class="${tool.icon || 'fas fa-link'} text-sm"></i>
+                </div>
+              `}
+              <h3 class="font-medium truncate">${tool.name}</h3>
+            </div>
+            <a href="${tool.link}" target="_blank" 
+               class="block w-full text-center py-2 bg-[#007AFF]/10 text-[#007AFF] rounded-md hover:bg-[#007AFF] hover:text-white transition-colors">
+              Open
+            </a>
+          </div>
+        `;
+        toolsContainer.insertAdjacentHTML('beforeend', toolHTML);
+      });
+    })
+    .catch(error => {
+      console.error(`Error loading tools for ${sectionName}:`, error);
+      toolsContainer.innerHTML = `
+        <div class="col-span-full text-red-400 text-center py-4">
+          Failed to load tools
+        </div>`;
+    });
+}
+
+   
+
+
+
+
+
+    
+
+
+
+
+
+
+    // Load Tools for Each Section
+   function loadTools(sectionId, sectionName) {
+  const contentDiv = document.getElementById(`content-${sectionId}`);
+  
+  // Show loading state
+  contentDiv.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading tools...</p>
+    </div>
+  `;
+  
+  db.collection("tools")
+    .where("section", "==", sectionName)
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        contentDiv.innerHTML = `
+          <div class="empty-state">
+            <p>No tools available in this section yet</p>
+            <small>Check back later or suggest a tool to add</small>
+          </div>
+        `;
+        return;
+      }
+      
+      let toolsHTML = '<div class="tools-grid">';
+      
+      querySnapshot.forEach((toolDoc) => {
+        const tool = toolDoc.data();
+        toolsHTML += `
+          <div class="tool-card">
+            <h4 class="tool-name">${tool.name}</h4>
+            <p class="tool-description">${tool.description || ''}</p>
+            <a href="${tool.link}" target="_blank" class="tool-link">Open Tool</a>
+          </div>
+        `;
+      });
+      
+      toolsHTML += '</div>';
+      contentDiv.innerHTML = toolsHTML;
+      
+    }).catch((error) => {
+      contentDiv.innerHTML = `
+        <div class="error-state">
+          <p>Failed to load tools</p>
+          <small>${error.message}</small>
+        </div>
+      `;
+      console.error("Error loading tools:", error);
+    });
+}
+
+
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    const icon = document.getElementById(`icon-${id.split("tools-")[1]}`);
+    section.classList.toggle("hidden");
+    icon.classList.toggle("rotate-180");
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Search Functionality
+document.getElementById('mainSearch').addEventListener('input', function(e) {
+  const searchTerm = e.target.value.toLowerCase();
+  
+  document.querySelectorAll('.tool-card').forEach(card => {
+    const name = card.querySelector('h3').textContent.toLowerCase();
+    card.style.display = name.includes(searchTerm) ? 'block' : 'none';
+  });
+  
+  // Show/hide sections based on visible tools
+  document.querySelectorAll('.section-container').forEach(section => {
+    const hasVisibleTools = Array.from(section.querySelectorAll('.tool-card'))
+      .some(card => card.style.display !== 'none');
+    
+    section.style.display = hasVisibleTools ? 'block' : 'none';
+  });
+});
+
+// Initialize on DOM Load
+document.addEventListener("DOMContentLoaded", () => {
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
+    authDomain: "new1-f9abc.firebaseapp.com",
+    projectId: "new1-f9abc",
+    storageBucket: "new1-f9abc.appspot.com",
+    messagingSenderId: "188713961246",
+    appId: "1:188713961246:web:7cd412770c6c0256bc2b0f"
+  };
+  
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  
+  // Load data
+  loadSectionsWithDropdowns();
+});
+    </script>
+
 </body>
 </html>
