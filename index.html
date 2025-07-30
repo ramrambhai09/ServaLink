@@ -358,27 +358,88 @@
         <span class="hidden md:inline text-white font-semibold">Servalink</span>
       </div>
       <nav class="flex md:flex-col gap-3 px-3 py-4 overflow-auto w-full justify-around">
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-home"></i><span class="hidden md:inline">Home</span>
-        </button>
+
+
+
+        <button 
+  class="flex items-center gap-3 hover:text-white text-xs"
+  onclick="window.location.reload()"
+>
+  <i class="fas fa-home"></i>
+  <span class="hidden md:inline">Home</span>
+</button>
+
+
+
         <button class="flex items-center gap-3 hover:text-white text-xs">
           <i class="fas fa-bell"></i><span class="hidden md:inline">Notification</span>
         </button>
         <button class="flex items-center gap-3 hover:text-white text-xs" onclick="toggleChatbox()">
           <i class="fas fa-comments"></i><span class="hidden md:inline">Chatbox</span>
         </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-th-large"></i><span class="hidden md:inline">My App</span>
-        </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-user-shield"></i><span class="hidden md:inline">Admin</span>
-        </button>
+
+
+
+        <!-- Button -->
+
+<button 
+  class="flex items-center gap-3 hover:text-white text-xs"
+  onclick="toggleAppContainer()"
+>
+  <i class="fas fa-th-large"></i>
+  <span class="hidden md:inline">My App</span>
+</button>
+
+<!-- Hidden Container (initially invisible) -->
+<div id="appContainer" class="hidden absolute bg-gray-800 p-4 rounded shadow-lg mt-2 text-sm">
+  ⚠️ App is under construction. Check back later!
+</div>
+
+<script>
+  let timeoutId;
+
+  function toggleAppContainer() {
+    const container = document.getElementById("appContainer");
+    container.classList.remove("hidden"); // Show container
+    
+    // Clear any existing timeout to prevent multiple triggers
+    if (timeoutId) clearTimeout(timeoutId);
+    
+    // Auto-close after 3 seconds (3000ms)
+    timeoutId = setTimeout(() => {
+      container.classList.add("hidden");
+    }, 3000);
+  }
+</script>
+
+
+
+
+        <button 
+  class="flex items-center gap-3 hover:text-white text-xs"
+  onclick="window.location.href = 'admin.html'"
+>
+  <i class="fas fa-user-shield"></i>
+  <span class="hidden md:inline">Admin</span>
+</button>
+
+
+
+
         <button id="theme-toggle"
           class="flex items-center gap-3 text-xs cursor-pointer hover:text-white transition-colors duration-200"
           title="Toggle Dark/Light Mode">
           <i id="theme-icon" class="fas fa-moon"></i>
           <span class="hidden md:inline">Dark/Light</span>
         </button>
+
+        
+
+
+
+
+
+        
         <button class="flex items-center gap-3 hover:text-white text-xs">
           <i class="fas fa-clock"></i><span class="hidden md:inline live-time">Live Time</span>
         </button>
@@ -421,6 +482,24 @@
     </aside>
   </div>
 
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   <!-- Chatbox -->
   <div class="chatbox" id="chatbox" style="display: none;">
     <div class="chatbox-header">
@@ -435,6 +514,18 @@
       <button><i class="fas fa-paper-plane"></i></button>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
   <script>
     // Theme toggle functionality
@@ -506,11 +597,13 @@
           const sectionElement = document.createElement('div');
           sectionElement.className = 'section';
           sectionElement.innerHTML = `
-            <div class="section-header">
-              <h2 class="section-title">${section.name}</h2>
-            </div>
-            <div class="tools-grid" id="tools-${sectionDoc.id}"></div>
-          `;
+  <div class="section-header cursor-pointer flex justify-between items-center bg-gray-200 dark:bg-gray-800 p-4 rounded" onclick="toggleSection('${sectionDoc.id}')">
+    <h2 class="section-title text-xl font-semibold text-black dark:text-white">${section.name}</h2>
+    <span class="toggle-icon text-black dark:text-white">▼</span>
+  </div>
+  <div class="tools-grid mt-2" id="tools-${sectionDoc.id}"></div>
+`;
+
           container.appendChild(sectionElement);
 
           db.collection("tools").where("section", "==", section.name).get().then(toolSnap => {
