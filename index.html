@@ -470,17 +470,7 @@
       </div>
     </main>
 
-    <!-- Right Sidebar -->
-    <aside class="bg-[#1A1C29] w-full md:w-64 flex flex-col p-4 text-gray-400 text-xs transition-colors duration-300" id="right-sidebar">
-      <h2 class="text-white font-semibold mb-4 flex items-center gap-2">
-        <i class="fas fa-star"></i> Task Manager & Timer
-      </h2>
-      <input id="new-task" type="text" placeholder="Add new task..." class="w-full bg-[#2A2C3B] text-white px-3 py-2 mb-4 rounded focus:outline-none" />
-      <ul id="task-list" class="mb-6 space-y-2"></ul>
-      <button id="start-timer" class="bg-[#FF3B30] hover:bg-red-600 text-white px-3 py-2 rounded mb-2 text-sm">Start</button>
-      <div class="timer-display text-white text-lg font-mono">00:00:00</div>
-    </aside>
-  </div>
+        
 
 
 
@@ -500,21 +490,148 @@
 
 
   
-  <!-- Chatbox -->
-  <div class="chatbox" id="chatbox" style="display: none;">
-    <div class="chatbox-header">
-      Servalink Chat
-      <span class="close-btn" onclick="toggleChatbox()">&times;</span>
-    </div>
-    <div class="chatbox-body">
-      <p>Hello! How can I help you today?</p>
-    </div>
-    <div class="chatbox-input">
-      <input type="text" placeholder="Type a message...">
-      <button><i class="fas fa-paper-plane"></i></button>
-    </div>
-  </div>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbox Demo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chat-messages {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e0 transparent;
+        }
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: #cbd5e0;
+            border-radius: 3px;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
 
+    <!-- Chatbox Toggle Button -->
+    <button id="chatToggle" class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50">
+        <i class="fas fa-comment-dots text-xl"></i>
+    </button>
+
+    <!-- Chatbox Container -->
+    <div id="chatbox" class="fixed bottom-24 right-6 w-80 bg-white rounded-lg shadow-xl overflow-hidden hidden flex flex-col border border-gray-200 z-40" style="height: 450px;">
+        <!-- Chatbox Header -->
+        <div class="bg-blue-600 text-white p-3 flex justify-between items-center">
+            <span class="font-semibold">Servalink Support</span>
+            <button id="closeChat" class="text-white hover:text-gray-200 text-xl focus:outline-none">
+                &times;
+            </button>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div id="chatMessages" class="flex-1 p-4 overflow-y-auto bg-gray-50 chat-messages">
+            <div class="mb-4 fade-in">
+                <p class="bg-blue-100 text-gray-800 rounded-lg p-3 max-w-xs">Hello! How can I help you today?</p>
+                <p class="text-xs text-gray-500 mt-1">Just now</p>
+            </div>
+        </div>
+        
+        <!-- Input Area - Fixed to be clearly visible -->
+        <div class="p-3 border-t border-gray-200 bg-white flex">
+            <input 
+                id="chatInput"
+                type="text" 
+                placeholder="Type your message..." 
+                class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800"
+            >
+            <button id="sendButton" class="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatToggle = document.getElementById('chatToggle');
+        const chatbox = document.getElementById('chatbox');
+        const closeChat = document.getElementById('closeChat');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatMessages = document.getElementById('chatMessages');
+
+        // Toggle chatbox visibility
+        function toggleChatbox() {
+            chatbox.classList.toggle('hidden');
+            if (!chatbox.classList.contains('hidden')) {
+                setTimeout(() => chatInput.focus(), 100);
+            }
+        }
+
+        // Event Listeners
+        chatToggle.addEventListener('click', toggleChatbox);
+        closeChat.addEventListener('click', toggleChatbox);
+
+        // Send message function
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message) {
+                // Add user message
+                addMessage(message, 'user');
+                chatInput.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const responses = [
+                        "I understand. How can I assist you further?",
+                        "Thanks for your message. We'll respond soon.",
+                        "That's an interesting question. Let me check...",
+                        "I can help with that. What specific information do you need?",
+                        "We're here to help. Can you provide more details?"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addMessage(randomResponse, 'bot');
+                }, 800);
+            }
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `mb-4 fade-in ${sender === 'user' ? 'text-right' : 'text-left'}`;
+            
+            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <p class="${sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} 
+                   rounded-lg p-3 inline-block max-w-xs">
+                    ${text}
+                </p>
+                <p class="text-xs text-gray-500 mt-1">${timestamp}</p>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Event listeners for sending messages
+        sendButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Auto-open chatbox for demo purposes
+        setTimeout(toggleChatbox, 1500);
+    </script>
+</body>
+</html>
 
 
 
@@ -637,16 +754,7 @@
     document.addEventListener("DOMContentLoaded", loadSectionsAndTools);
   </script>
 
-  <main class="flex-1 p-4 md:p-6 flex flex-col gap-6 overflow-auto" id="container">
-  <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-    <h1 class="text-white font-semibold text-2xl select-none">Welcome to Servalink</h1>
-    <div class="relative w-full md:max-w-md">
-      <input type="search" placeholder="Search" id="mainSearch"
-        class="w-full rounded-md bg-[#2A2C3B] text-gray-300 placeholder-gray-500 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3B30] transition-colors duration-300" />
-      <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
-    </div>
-  </div>
-  
+ 
   <!-- Dynamic Sections Container -->
   <div id="sectionsContainer" class="space-y-6"></div>
 </main>
@@ -899,3 +1007,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
+
+
+
