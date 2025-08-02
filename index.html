@@ -87,39 +87,54 @@
       color: var(--primary);
       border-color: var(--primary);
     }
+
+    .search-results {
+      position: absolute;
+      background-color: #1A1C29; /* Black container */
+      color: white; /* White text */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      width: calc(100% - 2rem);
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .search-result-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .search-result-item:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
   </style>
 </head>
 <body class="bg-[#1B1D2A] text-white transition-colors duration-300" id="body" data-theme="dark">
 
   <div class="min-h-screen flex flex-col md:flex-row overflow-hidden">
     <aside id="sidebar" class="bg-[#1A1C29] w-full md:w-52 flex-shrink-0 flex flex-row md:flex-col text-gray-400 text-sm select-none transition-colors duration-300">
-      <div class="flex items-center justify-center md:justify-start gap-2 px-4 py-3 border-b border-[#2A2C3B] w-full">
+      <div class="flex items-center justify-center md:justify-start gap-2 px-4 py-3 border-b border-[#2A2C3B] w-full" onclick="window.location.reload()">
         <img src="https://storage.googleapis.com/a1aa/image/6025c999-883f-4111-389e-e9385d06c3a8.jpg" alt="Servalink logo" class="w-12 h-12 rounded" />
         <span class="hidden md:inline text-white font-semibold">Servalink</span>
       </div>
       <nav class="flex md:flex-col gap-3 px-3 py-4 overflow-auto w-full justify-around">
-        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="window.location.reload()">
+        <button class="flex items-center gap-3 hover:text-white text-xs text-sm" onclick="window.location.reload()">
           <i class="fas fa-home"></i>
           <span class="hidden md:inline">Home</span>
         </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="toggleChatbox()">
+        <button class="flex items-center gap-3 hover:text-white text-xs text-sm" onclick="toggleChatbox()">
           <i class="fas fa-comments"></i><span class="hidden md:inline">Chatbox</span>
         </button>
-        <button id="theme-toggle" class="flex items-center gap-3 text-xs cursor-pointer hover:text-white transition-colors duration-200" title="Toggle Dark/Light Mode">
+        <button id="theme-toggle" class="flex items-center gap-3 text-xs text-sm cursor-pointer hover:text-white transition-colors duration-200" title="Toggle Dark/Light Mode">
           <i id="theme-icon" class="fas fa-moon"></i>
           <span class="hidden md:inline">Dark/Light</span>
         </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="window.location.href='admin.html'">
+        <button class="flex items-center gap-3 hover:text-white text-xs text-sm" onclick="window.location.href='admin.html'">
           <i class="fas fa-user-shield"></i>
           <span class="hidden md:inline">Admin</span>
         </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="showAppNotification()">
-          <i class="fas fa-th-large"></i>
-          <span class="hidden md:inline">My App</span>
-        </button>
-        <div id="appNotification" class="hidden absolute bg-gray-800 p-4 rounded shadow-lg mt-2 text-sm">
-          ⚠️ App is under construction. Check back later!
-        </div>
       </nav>
     </aside>
 
@@ -130,6 +145,7 @@
           <input type="search" id="searchInput" placeholder="Search tools..."
             class="w-full rounded-md bg-[#2A2C3B] text-gray-300 placeholder-gray-500 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3B30] transition-colors duration-300" />
           <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+          <div id="searchResults" class="search-results"></div>
         </div>
       </div>
       
@@ -147,10 +163,29 @@
     </main>
   </div>
 
+  <div id="chatbox" class="fixed bottom-24 right-6 w-80 bg-white rounded-lg shadow-xl overflow-hidden hidden flex flex-col border border-gray-200 z-40" style="height: 450px;">
+    <div class="bg-blue-600 text-white p-3 flex justify-between items-center">
+      <span class="font-semibold">Servalink Support</span>
+      <button id="closeChat" class="text-white hover:text-gray-200 text-xl focus:outline-none">&times;</button>
+    </div>
+    <div id="chatMessages" class="flex-1 p-4 overflow-y-auto bg-gray-50 chat-messages">
+      <div class="mb-4 fade-in">
+        <p class="bg-blue-100 text-gray-800 rounded-lg p-3 max-w-xs">Hello! How can I help you today?</p>
+        <p class="text-xs text-gray-500 mt-1">Just now</p>
+      </div>
+    </div>
+    <div class="p-3 border-t border-gray-200 bg-white flex">
+      <input id="chatInput" type="text" placeholder="Type your message..." class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800">
+      <button id="sendButton" class="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700 transition-colors">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
   <script>
     // Firebase configuration
     const firebaseConfig = {
-      apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
+      apiKey: "AIzaSyAvouFf_LBHew8EhdnWm0i3fsTVXHTblCc",
       authDomain: "new1-f9abc.firebaseapp.com",
       projectId: "new1-f9abc",
       storageBucket: "new1-f9abc.appspot.com",
@@ -208,6 +243,7 @@
           toolCard.innerHTML = `
             <div class="tool-name">${tool.name}</div>
             <a href="${tool.link}" target="_blank" class="tool-link">Open</a>
+            <button class="favorite-button" onclick="addToFavorites('${tool.name}')">Add to Favorites</button>
           `;
           toolsGrid.appendChild(toolCard);
         });
@@ -225,13 +261,12 @@
       content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
     }
 
-    // Show app notification
-    function showAppNotification() {
-      const notification = document.getElementById("appNotification");
-      notification.classList.remove("hidden");
-      setTimeout(() => {
-        notification.classList.add("hidden");
-      }, 3000);
+    // Add tool to favorites
+    function addToFavorites(toolName) {
+      const favoritesList = document.getElementById("favoritesList");
+      const favoriteItem = document.createElement('div');
+      favoriteItem.textContent = toolName;
+      favoritesList.appendChild(favoriteItem);
     }
 
     // Theme toggle functionality
@@ -266,12 +301,99 @@
     updateClock();
 
     // Search functionality
-    document.getElementById('searchInput').addEventListener('input', function(e) {
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    searchInput.addEventListener('input', function(e) {
       const searchTerm = e.target.value.toLowerCase();
-      document.querySelectorAll('.tool-card').forEach(card => {
-        const name = card.querySelector('.tool-name').textContent.toLowerCase();
-        card.style.display = name.includes(searchTerm) ? 'block' : 'none';
-      });
+      searchResults.innerHTML = ''; // Clear previous results
+
+      if (searchTerm) {
+        const toolCards = document.querySelectorAll('.tool-card');
+        toolCards.forEach(card => {
+          const name = card.querySelector('.tool-name').textContent.toLowerCase();
+          if (name.includes(searchTerm)) {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.textContent = name;
+            resultItem.onclick = () => {
+              // Show the corresponding tool's container
+              const sectionId = card.closest('.section').id;
+              toggleSection(sectionId);
+              searchInput.value = ''; // Clear the search input
+              searchResults.style.display = 'none'; // Hide search results
+            };
+            searchResults.appendChild(resultItem);
+          }
+        });
+        if (searchResults.children.length > 0) {
+          searchResults.style.display = 'block';
+        } else {
+          searchResults.style.display = 'none';
+        }
+      } else {
+        searchResults.style.display = 'none';
+      }
+    });
+
+    // Chatbox functionality
+    const chatToggle = document.getElementById('chatbox');
+    const closeChat = document.getElementById('closeChat');
+    const chatInput = document.getElementById('chatInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatMessages = document.getElementById('chatMessages');
+
+    function toggleChatbox() {
+      chatToggle.classList.toggle('hidden');
+      if (!chatToggle.classList.contains('hidden')) {
+        setTimeout(() => chatInput.focus(), 100);
+      }
+    }
+
+    closeChat.addEventListener('click', toggleChatbox);
+
+    function sendMessage() {
+      const message = chatInput.value.trim();
+      if (message) {
+        addMessage(message, 'user');
+        chatInput.value = '';
+        
+        // Simulate bot response
+        setTimeout(() => {
+          const responses = [
+            "I understand. How can I assist you further?",
+            "Thanks for your message. We'll respond soon.",
+            "That's an interesting question. Let me check...",
+            "I can help with that. What specific information do you need?",
+            "We're here to help. Can you provide more details?"
+          ];
+          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+          addMessage(randomResponse, 'bot');
+        }, 800);
+      }
+    }
+
+    function addMessage(text, sender) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `mb-4 fade-in ${sender === 'user' ? 'text-right' : 'text-left'}`;
+      
+      const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      
+      messageDiv.innerHTML = `
+        <p class="${sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} 
+           rounded-lg p-3 inline-block max-w-xs">
+          ${text}
+        </p>
+        <p class="text-xs text-gray-500 mt-1">${timestamp}</p>
+      `;
+      
+      chatMessages.appendChild(messageDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendButton.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage();
     });
 
     // Load sections and tools on DOMContentLoaded
