@@ -7,32 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <!-- Firebase Compat SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
   <style>
     :root {
       --primary: #007AFF;
-      --primary-light: rgba(0, 122, 255, 0.1);
       --text: #FFFFFF;
-      --text-secondary: rgba(255, 255, 255, 0.6);
       --bg: #1B1D2A;
       --card-bg: #1C1C1E;
-      --sidebar-bg: #1A1C29;
-      --right-sidebar-bg: #1A1C29;
       --border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    [data-theme="light"] {
-      --primary: #007AFF;
-      --primary-light: rgba(0, 122, 255, 0.1);
-      --text: #000000;
-      --text-secondary: rgba(0, 0, 0, 0.6);
-      --bg: #FFFFFF;
-      --card-bg: #F5F5F5;
-      --sidebar-bg: #F5F5F5;
-      --right-sidebar-bg: #F5F5F5;
-      --border-color: rgba(0, 0, 0, 0.1);
     }
 
     body {
@@ -42,426 +25,119 @@
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
-    .loading {
+    .section {
+      margin-bottom: 24px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .section-header {
+      padding: 18px 24px;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      padding: 40px 0;
+      cursor: pointer;
     }
 
-    .loading-spinner {
-      width: 40px;
-      height: 40px;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top-color: var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 16px;
+    .section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+      background-color: var(--card-bg);
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    .section.active .section-content {
+      max-height: 2000px; /* Adjust based on content */
+      padding: 20px;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ===== Section Styles ===== */
-.section {
-  margin-bottom: 24px;
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-}
-
-.section:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.section-header {
-  padding: 18px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.1) 100%);
-  transition: all 0.3s ease;
-}
-
-.section-header:hover {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.15) 100%);
-}
-
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.dropdown-icon {
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.section-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  background-color: var(--card-bg);
-}
-
-.section.active .section-content {
-  max-height: 2000px; /* Adjust based on content */
-  padding: 20px;
-}
-
-.section.active .dropdown-icon {
-  transform: rotate(180deg);
-  color: var(--primary);
-}
-
-/* ===== Tools Grid ===== */
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 5px; /* For focus states */
-}
-
-/* ===== Tool Cards ===== */
-.tool-card {
-  background-color: rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
-  position: relative;
-  overflow: hidden;
-}
-
-.tool-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--primary);
-  transform: scaleY(0);
-  transform-origin: bottom;
-  transition: transform 0.3s ease;
-}
-
-.tool-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  background-color: rgba(0, 0, 0, 0.15);
-}
-
-.tool-card:hover::before {
-  transform: scaleY(1);
-  transform-origin: top;
-}
-
-.tool-name {
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-primary);
-  font-size: 1.05rem;
-}
-
-.tool-description {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-  line-height: 1.5;
-  opacity: 0.9;
-}
-
-.tool-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-  background-color: var(--primary);
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-}
-
-.tool-link:hover {
-  background-color: transparent;
-  color: var(--primary);
-  border-color: var(--primary);
-  transform: translateY(-2px);
-}
-
-.tool-link:active {
-  transform: translateY(0);
-}
-
-/* ===== State Indicators ===== */
-.loading {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.loading-spinner {
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--primary);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 20px;
-}
-
-.empty-state, .error-state {
-  text-align: center;
-  padding: 30px 20px;
-  background-color: rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  border: 1px dashed var(--border-color);
-}
-
-.empty-state p, .error-state p {
-  color: var(--text-primary);
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.empty-state small, .error-state small {
-  color: var(--text-secondary);
-  opacity: 0.8;
-  font-size: 0.85rem;
-}
-
-/* ===== Animations ===== */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.tool-card {
-  animation: fadeIn 0.4s ease forwards;
-  opacity: 0;
-}
-
-/* ===== Responsive Adjustments ===== */
-@media (max-width: 768px) {
-  .tools-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-header {
-    padding: 16px 20px;
-  }
-  
-  .tool-card {
-    padding: 18px;
-  }
-}
-
-
-
-  .rotate-180 {
-    transform: rotate(180deg);
-    transition: transform 0.3s ease;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.rotate-180 {
-  transform: rotate(180deg);
-}
-
-.tools-grid {
-  transition: grid-template-rows 0.3s ease;
-}
-
-.loading-spinner {
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #007AFF;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-    /* Add other necessary styles here */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 5px;
+    }
+
+    .tool-card {
+      background-color: rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    .tool-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .tool-link:hover {
+      background-color: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
   </style>
 </head>
 <body class="bg-[#1B1D2A] text-white transition-colors duration-300" id="body" data-theme="dark">
 
   <div class="min-h-screen flex flex-col md:flex-row overflow-hidden">
-
-    <!-- Sidebar -->
-    <aside id="sidebar"
-      class="bg-[#1A1C29] w-full md:w-52 flex-shrink-0 flex flex-row md:flex-col text-gray-400 text-sm select-none transition-colors duration-300"
-    >
+    <aside id="sidebar" class="bg-[#1A1C29] w-full md:w-52 flex-shrink-0 flex flex-row md:flex-col text-gray-400 text-sm select-none transition-colors duration-300">
       <div class="flex items-center justify-center md:justify-start gap-2 px-4 py-3 border-b border-[#2A2C3B] w-full">
-        <img src="https://storage.googleapis.com/a1aa/image/6025c999-883f-4111-389e-e9385d06c3a8.jpg"
-          alt="Servalink logo" class="w-12 h-12 rounded" />
+        <img src="https://storage.googleapis.com/a1aa/image/6025c999-883f-4111-389e-e9385d06c3a8.jpg" alt="Servalink logo" class="w-12 h-12 rounded" />
         <span class="hidden md:inline text-white font-semibold">Servalink</span>
       </div>
       <nav class="flex md:flex-col gap-3 px-3 py-4 overflow-auto w-full justify-around">
-
-
-
-        <button 
-  class="flex items-center gap-3 hover:text-white text-xs"
-  onclick="window.location.reload()"
->
-  <i class="fas fa-home"></i>
-  <span class="hidden md:inline">Home</span>
-</button>
-
-
-
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-bell"></i><span class="hidden md:inline">Notification</span>
+        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="window.location.reload()">
+          <i class="fas fa-home"></i>
+          <span class="hidden md:inline">Home</span>
         </button>
         <button class="flex items-center gap-3 hover:text-white text-xs" onclick="toggleChatbox()">
           <i class="fas fa-comments"></i><span class="hidden md:inline">Chatbox</span>
         </button>
-
-
-
-        <!-- Button -->
-
-<button 
-  class="flex items-center gap-3 hover:text-white text-xs"
-  onclick="toggleAppContainer()"
->
-  <i class="fas fa-th-large"></i>
-  <span class="hidden md:inline">My App</span>
-</button>
-
-<!-- Hidden Container (initially invisible) -->
-<div id="appContainer" class="hidden absolute bg-gray-800 p-4 rounded shadow-lg mt-2 text-sm">
-  ⚠️ App is under construction. Check back later!
-</div>
-
-<script>
-  let timeoutId;
-
-  function toggleAppContainer() {
-    const container = document.getElementById("appContainer");
-    container.classList.remove("hidden"); // Show container
-    
-    // Clear any existing timeout to prevent multiple triggers
-    if (timeoutId) clearTimeout(timeoutId);
-    
-    // Auto-close after 3 seconds (3000ms)
-    timeoutId = setTimeout(() => {
-      container.classList.add("hidden");
-    }, 3000);
-  }
-</script>
-
-
-
-
-        <button 
-  class="flex items-center gap-3 hover:text-white text-xs"
-  onclick="window.location.href = 'admin.html'"
->
-  <i class="fas fa-user-shield"></i>
-  <span class="hidden md:inline">Admin</span>
-</button>
-
-
-
-
-        <button id="theme-toggle"
-          class="flex items-center gap-3 text-xs cursor-pointer hover:text-white transition-colors duration-200"
-          title="Toggle Dark/Light Mode">
+        <button id="theme-toggle" class="flex items-center gap-3 text-xs cursor-pointer hover:text-white transition-colors duration-200" title="Toggle Dark/Light Mode">
           <i id="theme-icon" class="fas fa-moon"></i>
           <span class="hidden md:inline">Dark/Light</span>
         </button>
-
-        
-
-
-
-
-
-        
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-clock"></i><span class="hidden md:inline live-time">Live Time</span>
+        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="window.location.href='admin.html'">
+          <i class="fas fa-user-shield"></i>
+          <span class="hidden md:inline">Admin</span>
         </button>
-        <button class="flex items-center gap-3 hover:text-white text-xs">
-          <i class="fas fa-calendar-day"></i><span class="hidden md:inline live-date">Live Date</span>
+        <button class="flex items-center gap-3 hover:text-white text-xs" onclick="showAppNotification()">
+          <i class="fas fa-th-large"></i>
+          <span class="hidden md:inline">My App</span>
         </button>
+        <div id="appNotification" class="hidden absolute bg-gray-800 p-4 rounded shadow-lg mt-2 text-sm">
+          ⚠️ App is under construction. Check back later!
+        </div>
       </nav>
     </aside>
 
-    <!-- Main content -->
     <main class="flex-1 p-4 md:p-6 flex flex-col gap-6 overflow-auto" id="container">
       <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h1 class="text-white font-semibold text-2xl select-none">Welcome to Servalink</h1>
         <div class="relative w-full md:max-w-md">
-          <input type="search" placeholder="Search"
+          <input type="search" id="searchInput" placeholder="Search tools..."
             class="w-full rounded-md bg-[#2A2C3B] text-gray-300 placeholder-gray-500 py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#FF3B30] transition-colors duration-300" />
-          <i
-            class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
         </div>
       </div>
       
-      <!-- Sections Container -->
+      <div class="flex justify-between">
+        <div class="live-time text-sm"></div>
+        <div class="live-date text-sm"></div>
+      </div>
+
       <div class="container" id="sectionsContainer">
         <div class="loading">
           <div class="loading-spinner"></div>
@@ -469,223 +145,10 @@
         </div>
       </div>
     </main>
-
-        
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbox Demo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .chat-messages {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e0 transparent;
-        }
-        .chat-messages::-webkit-scrollbar {
-            width: 6px;
-        }
-        .chat-messages::-webkit-scrollbar-thumb {
-            background-color: #cbd5e0;
-            border-radius: 3px;
-        }
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body class="bg-gray-100 min-h-screen">
-
-    <!-- Chatbox Toggle Button -->
-    <button id="chatToggle" class="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-all z-50">
-        <i class="fas fa-comment-dots text-xl"></i>
-    </button>
-
-    <!-- Chatbox Container -->
-    <div id="chatbox" class="fixed bottom-24 right-6 w-80 bg-white rounded-lg shadow-xl overflow-hidden hidden flex flex-col border border-gray-200 z-40" style="height: 450px;">
-        <!-- Chatbox Header -->
-        <div class="bg-blue-600 text-white p-3 flex justify-between items-center">
-            <span class="font-semibold">Servalink Support</span>
-            <button id="closeChat" class="text-white hover:text-gray-200 text-xl focus:outline-none">
-                &times;
-            </button>
-        </div>
-        
-        <!-- Chat Messages -->
-        <div id="chatMessages" class="flex-1 p-4 overflow-y-auto bg-gray-50 chat-messages">
-            <div class="mb-4 fade-in">
-                <p class="bg-blue-100 text-gray-800 rounded-lg p-3 max-w-xs">Hello! How can I help you today?</p>
-                <p class="text-xs text-gray-500 mt-1">Just now</p>
-            </div>
-        </div>
-        
-        <!-- Input Area - Fixed to be clearly visible -->
-        <div class="p-3 border-t border-gray-200 bg-white flex">
-            <input 
-                id="chatInput"
-                type="text" 
-                placeholder="Type your message..." 
-                class="flex-1 border border-gray-300 rounded-l-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-800"
-            >
-            <button id="sendButton" class="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700 transition-colors">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // DOM Elements
-        const chatToggle = document.getElementById('chatToggle');
-        const chatbox = document.getElementById('chatbox');
-        const closeChat = document.getElementById('closeChat');
-        const chatInput = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-        const chatMessages = document.getElementById('chatMessages');
-
-        // Toggle chatbox visibility
-        function toggleChatbox() {
-            chatbox.classList.toggle('hidden');
-            if (!chatbox.classList.contains('hidden')) {
-                setTimeout(() => chatInput.focus(), 100);
-            }
-        }
-
-        // Event Listeners
-        chatToggle.addEventListener('click', toggleChatbox);
-        closeChat.addEventListener('click', toggleChatbox);
-
-        // Send message function
-        function sendMessage() {
-            const message = chatInput.value.trim();
-            if (message) {
-                // Add user message
-                addMessage(message, 'user');
-                chatInput.value = '';
-                
-                // Simulate bot response
-                setTimeout(() => {
-                    const responses = [
-                        "I understand. How can I assist you further?",
-                        "Thanks for your message. We'll respond soon.",
-                        "That's an interesting question. Let me check...",
-                        "I can help with that. What specific information do you need?",
-                        "We're here to help. Can you provide more details?"
-                    ];
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-                    addMessage(randomResponse, 'bot');
-                }, 800);
-            }
-        }
-
-        // Add message to chat
-        function addMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `mb-4 fade-in ${sender === 'user' ? 'text-right' : 'text-left'}`;
-            
-            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <p class="${sender === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} 
-                   rounded-lg p-3 inline-block max-w-xs">
-                    ${text}
-                </p>
-                <p class="text-xs text-gray-500 mt-1">${timestamp}</p>
-            `;
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // Event listeners for sending messages
-        sendButton.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-       
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
+  </div>
 
   <script>
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-    const body = document.getElementById('body');
-
-    themeToggle.addEventListener('click', () => {
-      const isDark = body.getAttribute('data-theme') === 'dark';
-      body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      themeIcon.classList.toggle('fa-moon', !isDark);
-      themeIcon.classList.toggle('fa-sun', isDark);
-      localStorage.setItem('theme', isDark ? 'light' : 'dark');
-    });
-
-    // Initialize theme from localStorage
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    body.setAttribute('data-theme', savedTheme);
-    if (savedTheme === 'light') {
-      themeIcon.classList.replace('fa-moon', 'fa-sun');
-    }
-
-    // Clock functionality
-    function updateClock() {
-      const now = new Date();
-      document.querySelectorAll(".live-time").forEach(el => {
-        el.textContent = now.toLocaleTimeString();
-      });
-      document.querySelectorAll(".live-date").forEach(el => {
-        el.textContent = now.toLocaleDateString(undefined, {
-          weekday: "long", year: "numeric", month: "long", day: "numeric"
-        });
-      });
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Chatbox toggle
-    function toggleChatbox() {
-      const chatbox = document.getElementById("chatbox");
-      chatbox.style.display = chatbox.style.display === "none" ? "block" : "none";
-    }
-
-    // Firebase initialization
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
       authDomain: "new1-f9abc.firebaseapp.com",
@@ -713,300 +176,106 @@
           const sectionElement = document.createElement('div');
           sectionElement.className = 'section';
           sectionElement.innerHTML = `
-  <div class="section-header cursor-pointer flex justify-between items-center bg-gray-200 dark:bg-gray-800 p-4 rounded" onclick="toggleSection('${sectionDoc.id}')">
-    <h2 class="section-title text-xl font-semibold text-black dark:text-white">${section.name}</h2>
-    <span class="toggle-icon text-black dark:text-white">▼</span>
-  </div>
-  <div class="tools-grid mt-2" id="tools-${sectionDoc.id}"></div>
-`;
-
+            <div class="section-header" onclick="toggleSection('${sectionDoc.id}')">
+              <h2 class="section-title">${section.name}</h2>
+              <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content" id="content-${sectionDoc.id}"></div>
+          `;
           container.appendChild(sectionElement);
-
-          db.collection("tools").where("section", "==", section.name).get().then(toolSnap => {
-            const toolGrid = document.getElementById(`tools-${sectionDoc.id}`);
-            if (toolSnap.empty) {
-              toolGrid.innerHTML = '<div class="no-results">No tools in this section</div>';
-              return;
-            }
-            toolSnap.forEach(toolDoc => {
-              const tool = toolDoc.data();
-              const toolCard = document.createElement('div');
-              toolCard.className = 'tool-card';
-              toolCard.innerHTML = `
-                <div class="tool-name">${tool.name}</div>
-                <a href="${tool.link}" target="_blank" class="tool-link">Open</a>
-              `;
-              toolGrid.appendChild(toolCard);
-            });
-          });
+          loadToolsForSection(sectionDoc.id, section.name);
         });
       }).catch(error => {
         console.error("Error loading data:", error);
-        container.innerHTML = `
-          <div class="error-state">
-            <p>Failed to load data. Try again later.</p>
-            <button onclick="location.reload()">Retry</button>
-          </div>`;
+        container.innerHTML = '<div class="error-state">Failed to load data. Try again later.</div>';
       });
     }
 
+    // Load tools for each section
+    function loadToolsForSection(sectionId, sectionName) {
+      const toolsContainer = document.getElementById(`content-${sectionId}`);
+      db.collection("tools").where("section", "==", sectionName).get().then(toolSnap => {
+        if (toolSnap.empty) {
+          toolsContainer.innerHTML = '<div>No tools in this section</div>';
+          return;
+        }
+        const toolsGrid = document.createElement('div');
+        toolsGrid.className = 'tools-grid';
+        toolSnap.forEach(toolDoc => {
+          const tool = toolDoc.data();
+          const toolCard = document.createElement('div');
+          toolCard.className = 'tool-card';
+          toolCard.innerHTML = `
+            <div class="tool-name">${tool.name}</div>
+            <a href="${tool.link}" target="_blank" class="tool-link">Open</a>
+          `;
+          toolsGrid.appendChild(toolCard);
+        });
+        toolsContainer.appendChild(toolsGrid);
+      }).catch(error => {
+        console.error(`Error loading tools for ${sectionName}:`, error);
+        toolsContainer.innerHTML = '<div>Failed to load tools</div>';
+      });
+    }
+
+    // Toggle section visibility
+    function toggleSection(sectionId) {
+      const content = document.getElementById(`content-${sectionId}`);
+      content.classList.toggle('active');
+      content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+    }
+
+    // Show app notification
+    function showAppNotification() {
+      const notification = document.getElementById("appNotification");
+      notification.classList.remove("hidden");
+      setTimeout(() => {
+        notification.classList.add("hidden");
+      }, 3000);
+    }
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.getElementById('body');
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = body.getAttribute('data-theme') === 'dark';
+      body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      themeIcon.classList.toggle('fa-moon', !isDark);
+      themeIcon.classList.toggle('fa-sun', isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+
+    // Initialize theme from localStorage
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    body.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'light') {
+      themeIcon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    // Live time and date functionality
+    function updateClock() {
+      const now = new Date();
+      document.querySelector(".live-time").textContent = now.toLocaleTimeString();
+      document.querySelector(".live-date").textContent = now.toLocaleDateString(undefined, {
+        weekday: "long", year: "numeric", month: "long", day: "numeric"
+      });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      document.querySelectorAll('.tool-card').forEach(card => {
+        const name = card.querySelector('.tool-name').textContent.toLowerCase();
+        card.style.display = name.includes(searchTerm) ? 'block' : 'none';
+      });
+    });
+
+    // Load sections and tools on DOMContentLoaded
     document.addEventListener("DOMContentLoaded", loadSectionsAndTools);
   </script>
-
- 
-  <!-- Dynamic Sections Container -->
-  <div id="sectionsContainer" class="space-y-6"></div>
-</main>
-
-<script>
-
-
-// Firebase Data Loading Function
-function loadSectionsWithDropdowns() {
-  const container = document.getElementById("sectionsContainer");
-  
-  db.collection("sections").orderBy("order").get().then(sectionSnap => {
-    container.innerHTML = '';
-    
-    if (sectionSnap.empty) {
-      container.innerHTML = '<div class="text-gray-400">No sections found</div>';
-      return;
-    }
-
-    sectionSnap.forEach(sectionDoc => {
-      const section = sectionDoc.data();
-      const sectionId = sectionDoc.id;
-      
-      // Create section with dropdown
-      const sectionHTML = `
-        <div class="section-container bg-[#2A2C3B] rounded-lg overflow-hidden">
-          <div class="section-header flex justify-between items-center p-4 cursor-pointer border-b border-[#3A3C4B]">
-            <h2 class="text-lg font-semibold flex items-center gap-3">
-              <i class="${section.icon || 'fas fa-folder'}"></i>
-              ${section.name}
-            </h2>
-            <i class="fas fa-chevron-down transition-transform duration-200"></i>
-          </div>
-          
-          <div class="section-content hidden p-4 bg-[#1E202A]">
-            <div class="tools-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" 
-                 id="tools-${sectionId}">
-              <div class="loading-spinner mx-auto col-span-full"></div>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      container.insertAdjacentHTML('beforeend', sectionHTML);
-      
-      // Load tools for this section
-      loadToolsForSection(sectionId, section.name);
-      
-      // Add click event for dropdown toggle
-      const header = container.lastElementChild.querySelector('.section-header');
-      header.addEventListener('click', function() {
-        const content = this.nextElementSibling;
-        const icon = this.querySelector('.fa-chevron-down');
-        
-        content.classList.toggle('hidden');
-        icon.classList.toggle('rotate-180');
-      });
-    });
-  }).catch(error => {
-    console.error("Error loading sections:", error);
-    container.innerHTML = `
-      <div class="error-state p-4 bg-red-900/20 rounded-lg">
-        <p class="text-red-400">Failed to load sections. Please try again.</p>
-        <button onclick="loadSectionsWithDropdowns()" 
-                class="mt-2 px-4 py-2 bg-[#FF3B30] rounded-md text-sm">
-          Retry
-        </button>
-      </div>`;
-  });
-}
-
-// Load Tools for Each Section
-function loadToolsForSection(sectionId, sectionName) {
-  const toolsContainer = document.getElementById(`tools-${sectionId}`);
-  
-  db.collection("tools")
-    .where("section", "==", sectionName)
-    .orderBy("name")
-    .get()
-    .then(toolSnap => {
-      toolsContainer.innerHTML = '';
-      
-      if (toolSnap.empty) {
-        toolsContainer.innerHTML = '<div class="col-span-full text-gray-400 text-center py-4">No tools found</div>';
-        return;
-      }
-      
-      toolSnap.forEach(toolDoc => {
-        const tool = toolDoc.data();
-        const toolHTML = `
-          <div class="tool-card bg-[#2A2C3B] rounded-lg p-3 hover:bg-[#3A3C4B] transition-colors">
-            <div class="flex items-center gap-3 mb-2">
-              ${tool.iconUrl ? `
-                <img src="${tool.iconUrl}" class="w-8 h-8 object-contain" />
-              ` : `
-                <div class="w-8 h-8 flex items-center justify-center bg-[#007AFF]/20 text-[#007AFF] rounded-lg">
-                  <i class="${tool.icon || 'fas fa-link'} text-sm"></i>
-                </div>
-              `}
-              <h3 class="font-medium truncate">${tool.name}</h3>
-            </div>
-            <a href="${tool.link}" target="_blank" 
-               class="block w-full text-center py-2 bg-[#007AFF]/10 text-[#007AFF] rounded-md hover:bg-[#007AFF] hover:text-white transition-colors">
-              Open
-            </a>
-          </div>
-        `;
-        toolsContainer.insertAdjacentHTML('beforeend', toolHTML);
-      });
-    })
-    .catch(error => {
-      console.error(`Error loading tools for ${sectionName}:`, error);
-      toolsContainer.innerHTML = `
-        <div class="col-span-full text-red-400 text-center py-4">
-          Failed to load tools
-        </div>`;
-    });
-}
-
-   
-
-
-
-
-
-    
-
-
-
-
-
-
-    // Load Tools for Each Section
-   function loadTools(sectionId, sectionName) {
-  const contentDiv = document.getElementById(`content-${sectionId}`);
-  
-  // Show loading state
-  contentDiv.innerHTML = `
-    <div class="loading">
-      <div class="loading-spinner"></div>
-      <p>Loading tools...</p>
-    </div>
-  `;
-  
-  db.collection("tools")
-    .where("section", "==", sectionName)
-    .get()
-    .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        contentDiv.innerHTML = `
-          <div class="empty-state">
-            <p>No tools available in this section yet</p>
-            <small>Check back later or suggest a tool to add</small>
-          </div>
-        `;
-        return;
-      }
-      
-      let toolsHTML = '<div class="tools-grid">';
-      
-      querySnapshot.forEach((toolDoc) => {
-        const tool = toolDoc.data();
-        toolsHTML += `
-          <div class="tool-card">
-            <h4 class="tool-name">${tool.name}</h4>
-            <p class="tool-description">${tool.description || ''}</p>
-            <a href="${tool.link}" target="_blank" class="tool-link">Open Tool</a>
-          </div>
-        `;
-      });
-      
-      toolsHTML += '</div>';
-      contentDiv.innerHTML = toolsHTML;
-      
-    }).catch((error) => {
-      contentDiv.innerHTML = `
-        <div class="error-state">
-          <p>Failed to load tools</p>
-          <small>${error.message}</small>
-        </div>
-      `;
-      console.error("Error loading tools:", error);
-    });
-}
-
-
-  function toggleSection(id) {
-    const section = document.getElementById(id);
-    const icon = document.getElementById(`icon-${id.split("tools-")[1]}`);
-    section.classList.toggle("hidden");
-    icon.classList.toggle("rotate-180");
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Search Functionality
-document.getElementById('mainSearch').addEventListener('input', function(e) {
-  const searchTerm = e.target.value.toLowerCase();
-  
-  document.querySelectorAll('.tool-card').forEach(card => {
-    const name = card.querySelector('h3').textContent.toLowerCase();
-    card.style.display = name.includes(searchTerm) ? 'block' : 'none';
-  });
-  
-  // Show/hide sections based on visible tools
-  document.querySelectorAll('.section-container').forEach(section => {
-    const hasVisibleTools = Array.from(section.querySelectorAll('.tool-card'))
-      .some(card => card.style.display !== 'none');
-    
-    section.style.display = hasVisibleTools ? 'block' : 'none';
-  });
-});
-
-// Initialize on DOM Load
-document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyCS3Mtmql0tRAFiVg7LAjcBru_tY1EmO_w",
-    authDomain: "new1-f9abc.firebaseapp.com",
-    projectId: "new1-f9abc",
-    storageBucket: "new1-f9abc.appspot.com",
-    messagingSenderId: "188713961246",
-    appId: "1:188713961246:web:7cd412770c6c0256bc2b0f"
-  };
-  
-  firebase.initializeApp(firebaseConfig);
-  db = firebase.firestore();
-  
-  // Load data
-  loadSectionsWithDropdowns();
-});
-    </script>
-
 </body>
 </html>
-
-
-
-
