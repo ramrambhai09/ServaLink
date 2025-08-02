@@ -234,17 +234,7 @@
           toolsContainer.innerHTML = '<div>No tools in this section</div>';
           return;
         }
-        const toolsGrid = document.createElement('div');
-        toolsGrid.className = 'tools-grid';
-        toolSnap.forEach(toolDoc => {
-          const tool = toolDoc.data();
-          const toolCard = document.createElement('div');
-          toolCard.className = 'tool-card';
-          toolCard.innerHTML = `
-            <div class="tool-name">${tool.name}</div>
-            <a href="${tool.link}" target="_blank" class="tool-link">Open</a>
-            <button class="favorite-button" onclick="addToFavorites('${tool.name}')">Add to Favorites</button>
-          `;
+      
           toolsGrid.appendChild(toolCard);
         });
         toolsContainer.appendChild(toolsGrid);
@@ -401,3 +391,4 @@
   </script>
 </body>
 </html>
+
